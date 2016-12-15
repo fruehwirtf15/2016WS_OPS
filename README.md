@@ -13,5 +13,5 @@ InterfaceOptVerfahren.h    ... Interface für die Verfahren damit man die auch a
 InterfaceOptVerfahren.cpp  ... Implementierung falls wir die überhaupt brauchen
 GS.h                       ... Goldener Schnitt Verfahren
 FB.h                       ... Fibonacci Verfahren
-BI.h                       ... Bisektions Verfahren
+BI.h                       ... Bisektions Verfahren 
 

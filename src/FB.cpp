@@ -1,28 +1,28 @@
 /*
- * GS.cpp
+ * FB.cpp
  *
  *  Created on: 15.12.2016
  *      Author: FruehwF
  */
 
-#include "GS.h"
+#include "FB.h"
 
 namespace std {
 
-GS::GS() {
+FB::FB() {
 	// TODO Auto-generated constructor stub
 
 }
 
-GS::~GS() {
+FB::~FB() {
 	// TODO Auto-generated destructor stub
 }
 
-double GS::findMinimum(double a, double b, Funktion &f, double epsilon) {
+double FB::findMinimum(double a, double b, Funktion &f, double epsilon) {
 	return 0.0;
 }
 
-void GS::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon, string fileName) {
+void FB::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon, string fileName) {
 	//TODO Ausgabe des Optimierungsverlaufs in eine Datei.
 }
 

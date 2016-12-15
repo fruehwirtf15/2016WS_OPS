@@ -1,21 +1,21 @@
 /*
- * GS.h
+ * FB.h
  *
  *  Created on: 15.12.2016
  *      Author: FruehwF
  */
 
-#ifndef GS_H_
-#define GS_H_
+#ifndef FB_H_
+#define FB_H_
 
 #include "InterfaceOptVerfahren.h"
 
 namespace std {
 
-class GS: public InterfaceOptVerfahren {
+class FB: public InterfaceOptVerfahren {
 public:
-	GS();
-	virtual ~GS();
+	FB();
+	virtual ~FB();
 	virtual double findMinimum(double a, double b, Funktion &f, double epsilon)
 			override;
 	virtual void makeGnuPlotFile(double a, double b, Funktion &f,
@@ -24,4 +24,4 @@ public:
 
 } /* namespace std */
 
-#endif /* GS_H_ */
+#endif /* FB_H_ */

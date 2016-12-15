@@ -11,6 +11,8 @@
 #include "Funktion.h"
 #include "Funktionen.h"
 #include "GS.h"
+#include "BI.h"
+#include "FB.h"
 #include "InterfaceOptVerfahren.h"
 
 using namespace std;
@@ -22,9 +24,13 @@ void auswerten(Funktion &f,InterfaceOptVerfahren &v, double x) {
 
 int main() {
 	f1 f;
-	GS Verfahren;;
+	GS gs;
+	FB fibo;
+	BI bisec;
 	double x = 3.3;
-	auswerten(f,Verfahren,x);
+	auswerten(f,gs,x);
+	auswerten(f,fibo,x);
+	auswerten(f,bisec,x);
 
 	return 0;
 }

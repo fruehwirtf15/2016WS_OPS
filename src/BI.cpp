@@ -19,7 +19,7 @@ BI::~BI() {
 }
 
 double BI::findMinimum(double a, double b, Funktion &f, double epsilon) {
-	return 0.0;
+	return f.value((a+b)/2.0);
 }
 
 void BI::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon, string fileName) {

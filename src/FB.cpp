@@ -19,7 +19,7 @@ FB::~FB() {
 }
 
 double FB::findMinimum(double a, double b, Funktion &f, double epsilon) {
-	return 0.0;
+	return 1.0;
 }
 
 void FB::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon, string fileName) {

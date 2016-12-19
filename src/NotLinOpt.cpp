@@ -31,11 +31,20 @@ bool match(const std::string& s, const char * c) {
 			&& s.compare(0, s.length(), c, s.length()) == 0;
 }
 
-const char helpstr[] = "Methode to select\n"
+const char helpstr[] = "Usage: <Methode> <Function> <Lower Bound> <Upper Bound> <Epsilon>\n"
+		"Example: BI f1 0.5 10.5 0.0003\n"
+		"Methode to select\n"
 		"BI ............................ Bisection method\n"
 		"FB ............................ Fibonacci methode\n"
 		"GS ............................ Golden ratio methode\n"
-		"quit .............................. quit program\n\n"
+		"Functions to select\n"
+		"f1 .................. 2x^2 + e^(-2x)\n"
+		"f2 .................. (x^4)/4 - x^2 + 2x\n"
+		"f3 .................. x^5 + 5x^4 + 5x^3 - 5x^2 - 6x\n"
+		"f4 .................. x^4 - 16 x^2 - 1\n"
+		"f5 .................. ln(|x^3 + 5x -5|)\n"
+		"f6 .................. ln(|x^4 - 16 x^2 - 1|)\n"
+		"quit .......................... quit program\n\n"
 		"arguments surrounded by [] are optional\n";
 
 Funktion* chooseFunction(std::string funcmd, f1 f_1, f2 f_2, f3 f_3, f4 f_4,
@@ -75,6 +84,7 @@ int main() {
 	double b = 10.0;
 	double epsilon = 0.0004;
 
+	std::cout << helpstr;
 	while (true) {
 		f = nullptr;
 

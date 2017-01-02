@@ -23,5 +23,3 @@ FB.h                       ... Fibonacci Verfahren
 
 BI.h                       ... Bisektions Verfahren 
 
-test
-

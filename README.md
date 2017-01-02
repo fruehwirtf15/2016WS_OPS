@@ -23,3 +23,5 @@ FB.h                       ... Fibonacci Verfahren
 
 BI.h                       ... Bisektions Verfahren 
 
+
+__Readme_Test_Lukas

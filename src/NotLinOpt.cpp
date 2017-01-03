@@ -33,7 +33,7 @@ bool match(const std::string& s, const char * c) {
 
 const char helpstr[] = "Usage: <Methode> <Function> <Lower Bound> <Upper Bound> <Epsilon>\n"
 		"Example: BI f1 0.5 10.5 0.0003\n"
-		"Methode to select\n"
+		"Methods to select\n"
 		"BI ............................ Bisection method\n"
 		"FB ............................ Fibonacci methode\n"
 		"GS ............................ Golden ratio methode\n"

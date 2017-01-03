@@ -6,6 +6,7 @@
  */
 
 #include "GS.h"
+#include <cmath>
 
 namespace std {
 
@@ -19,6 +20,19 @@ GS::~GS() {
 }
 
 double GS::findMinimum(double a, double b, Funktion &f, double epsilon) {
+	double goldeneRatio = (sqrt(5)-1)/2;
+	double interval = (a+b) * epsilon;
+	double lambda;
+	double mue;
+	while ((a+b) >= interval) {
+		lambda = a + (1 - goldeneRatio) * (b - a);
+		mue = a + goldeneRatio * (b - a);
+		if (f.value(lambda) < f.value(mue)) {
+			b = mue;
+		}
+		else a = lambda;
+	}
+
 	return 0.0;
 }
 

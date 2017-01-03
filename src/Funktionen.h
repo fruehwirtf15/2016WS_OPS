@@ -15,10 +15,9 @@ class f1: public Funktion {
 public:
 
 	double value(double x) {
-		// TODO Implement f1
-		return x * x - 1;
-	}
-
+        // TODO Implement f1
+        return x * x - 1;
+    }
 };
 
 class f2: public Funktion {

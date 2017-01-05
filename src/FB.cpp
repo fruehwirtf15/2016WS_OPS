@@ -20,9 +20,9 @@ FB::~FB() {
 
 int GetFibonacci(int position) //Returns Fibonacci Number of the given Position.
 		{
-	int FibonacciNumber = 0;
-	int LastFibonacci = 0;
-	for (int i = 0; i < position; i++) {
+	int FibonacciNumber = 1;
+	int LastFibonacci = 1;
+	for (int i = 0; i <= position; i++) {
 		if (i == 0) {
 			FibonacciNumber = 1;
 			LastFibonacci = 1;
@@ -35,7 +35,6 @@ int GetFibonacci(int position) //Returns Fibonacci Number of the given Position.
 	return FibonacciNumber;
 
 }
-;
 
 double FB::findMinimum(double a, double b, Funktion &f, double epsilon) {
 	double lambda;

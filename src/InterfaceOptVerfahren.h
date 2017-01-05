@@ -9,6 +9,8 @@
 #define INTERFACEOPTVERFAHREN_H_
 #include <string>
 #include "Funktion.h"
+#include <iostream>
+#include <fstream>
 
 namespace std {
 
@@ -17,7 +19,7 @@ public:
 	InterfaceOptVerfahren();
 	virtual ~InterfaceOptVerfahren();
 	virtual double findMinimum(double a, double b, Funktion &f, double epsilon) = 0;
-	virtual void makeGnuPlotFile(double a, double b, Funktion &f, double epsilon, string  fileName) = 0;
+	virtual void makeGnuPlotFile(double a, double b, Funktion &f, double epsilon, ofstream& myfile) = 0;
 };
 
 } /* namespace std */

@@ -22,7 +22,7 @@ double FB::findMinimum(double a, double b, Funktion &f, double epsilon) {
 	return 1.0;
 }
 
-void FB::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon, string fileName) {
+void FB::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon, ofstream& file) {
 	//TODO Ausgabe des Optimierungsverlaufs in eine Datei.
 }
 

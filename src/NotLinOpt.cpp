@@ -21,31 +21,45 @@
 
 using namespace std;
 
-void auswerten(Funktion &f, InterfaceOptVerfahren &v, double a, double b, double eps) {
+void auswerten(Funktion &f, InterfaceOptVerfahren &v, double a, double b,
+		double eps) {
 	double x = v.findMinimum(a, b, f, eps);
 
-	cout << "Min: " << x << " Funktionswert: " << f.value(x)  << endl; // prints Test Value
+	cout << "Min: " << x << " Funktionswert: " << f.value(x) << endl; // prints Test Value
+}
+
+void ausgeben(Funktion &f, InterfaceOptVerfahren &v, double a, double b,
+		double eps, string filename) {
+	ofstream myfile;
+	myfile.open(filename);
+	v.makeGnuPlotFile(a, b, f, eps, myfile);
+	double x = v.findMinimum(a, b, f, eps);
+
+	cout << "Min: " << x << " Funktionswert: " << f.value(x) << endl; // prints Test Value
+	myfile.close();
+	cout << " written to: " << filename;
 }
 bool match(const std::string& s, const char * c) {
 	return c && s.length() > 0 && s.length() <= std::strlen(c)
 			&& s.compare(0, s.length(), c, s.length()) == 0;
 }
 
-const char helpstr[] = "Usage: <Methode> <Function> <Lower Bound> <Upper Bound> <Epsilon>\n"
-		"Example: BI f1 0.5 10.5 0.0003\n"
-		"Methods to select\n"
-		"BI ............................ Bisection method\n"
-		"FB ............................ Fibonacci methode\n"
-		"GS ............................ Golden ratio methode\n"
-		"Functions to select\n"
-		"f1 .................. 2x^2 + e^(-2x)\n"
-		"f2 .................. (x^4)/4 - x^2 + 2x\n"
-		"f3 .................. x^5 + 5x^4 + 5x^3 - 5x^2 - 6x\n"
-		"f4 .................. x^4 - 16 x^2 - 1\n"
-		"f5 .................. ln(|x^3 + 5x -5|)\n"
-		"f6 .................. ln(|x^4 - 16 x^2 - 1|)\n"
-		"quit .......................... quit program\n\n"
-		"arguments surrounded by [] are optional\n";
+const char helpstr[] =
+		"Usage: <Methode> <Function> <Lower Bound> <Upper Bound> <Epsilon>\n"
+				"Example: BI f1 0.5 10.5 0.0003\n"
+				"Methods to select\n"
+				"BI ............................ Bisection method\n"
+				"FB ............................ Fibonacci methode\n"
+				"GS ............................ Golden ratio methode\n"
+				"Functions to select\n"
+				"f1 .................. 2x^2 + e^(-2x)\n"
+				"f2 .................. (x^4)/4 - x^2 + 2x\n"
+				"f3 .................. x^5 + 5x^4 + 5x^3 - 5x^2 - 6x\n"
+				"f4 .................. x^4 - 16 x^2 - 1\n"
+				"f5 .................. ln(|x^3 + 5x -5|)\n"
+				"f6 .................. ln(|x^4 - 16 x^2 - 1|)\n"
+				"quit .......................... quit program\n\n"
+				"arguments surrounded by [] are optional\n";
 
 Funktion* chooseFunction(std::string funcmd, f1 f_1, f2 f_2, f3 f_3, f4 f_4,
 		f5 f_5, f6 f_6) {
@@ -85,6 +99,7 @@ int main() {
 
 	std::cout << helpstr;
 	while (true) {
+		string filename = "";
 		f = nullptr;
 
 		std::cout << std::endl << "> ";
@@ -99,6 +114,10 @@ int main() {
 		cmdstream >> cmd;
 
 		try {
+#if defined(DEBUG)
+			double time1 = 0.0, tstart;
+			tstart = clock();
+#endif
 			if (cmd.length() == 0) {
 			} else if (match(cmd, "quit")) {
 				std::cout << cmd << "Auf Wiederschaun!" << endl;
@@ -110,28 +129,40 @@ int main() {
 				cmdstream >> funcmd;
 				f = chooseFunction(funcmd, f_1, f_2, f_3, f_4, f_5, f_6);
 
-				if (f)
+				if (f) {
 					cmdstream >> a >> b >> epsilon;
-					auswerten(*f, bisec, a , b , epsilon);
+					auswerten(*f, bisec, a, b, epsilon);
+				}
 
 			} else if (match(cmd, "FB")) {
 				std::string funcmd;
 				cmdstream >> funcmd;
 				f = chooseFunction(funcmd, f_1, f_2, f_3, f_4, f_5, f_6);
-				if (f)
+				if (f) {
 					cmdstream >> a >> b >> epsilon;
-					auswerten(*f, fibo, a , b , epsilon);
+					auswerten(*f, fibo, a, b, epsilon);
+				}
 			} else if (match(cmd, "GS")) {
 				std::string funcmd;
 				cmdstream >> funcmd;
-				cmdstream >> a >> b >> epsilon;
 				f = chooseFunction(funcmd, f_1, f_2, f_3, f_4, f_5, f_6);
-				if (f)
-					auswerten(*f, gs, a , b , epsilon);
+				if (f) {
+					cmdstream >> a >> b >> epsilon;
+					auswerten(*f, gs, a, b, epsilon);
+					cmdstream >> filename;
+					if (filename != "") {
+						ausgeben(*f, gs, a, b, epsilon, filename);
+					}
+				}
+
 			} else {
 				std::cout << cmd << "? try 'help'";
 			}
-
+#if defined(DEBUG)
+			time1 += clock() - tstart;     // end
+			time1 = time1 / CLOCKS_PER_SEC;// rescale to seconds
+			std::cerr << "  time for "<<cmd <<" = " << time1 << " sec." << std::endl;
+#endif
 		} catch (CalculationException& e) {
 			std::cout << "catched FunctionException \"" << e.what() << "\"";
 
@@ -141,7 +172,6 @@ int main() {
 			std::cout << "OOPS! - catched something else";
 		}
 	}
-
 
 	return 0;
 }

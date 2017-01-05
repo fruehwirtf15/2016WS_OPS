@@ -20,25 +20,69 @@ GS::~GS() {
 }
 
 double GS::findMinimum(double a, double b, Funktion &f, double epsilon) {
-    double goldenRatio = (sqrt(5) - 1) / 2;
-    double interval = (b-a) * epsilon;
-    double lambda;
-    double mue;
-    while ((b-a) > interval) {
-        lambda = a + (1 - goldenRatio) * (b - a);
-        mue = a + goldenRatio * (b - a);
-        if (f.value(lambda) < f.value(mue)) {
-            b = mue;
-        } else a = lambda;
-    }
+	double goldenRatio = (sqrt(5) - 1) / 2;
+	double interval = (b - a) * epsilon;
+	double lambda, f_lambda;
+	double mue, f_mue;
 
-    return (mue - lambda) / 2;
+	lambda = a + (1 - goldenRatio) * (b - a);
+	f_lambda = f.value(lambda);
+	mue = a + goldenRatio * (b - a);
+	f_mue = f.value(mue);
+
+	while ((b - a) > interval) {
+		if (f_lambda < f_mue) {
+			b = mue;
+			mue = lambda;
+			f_mue = f_lambda;
+			lambda = a + (1 - goldenRatio) * (b - a);
+			f_lambda = f.value(lambda);
+		} else {
+			a = lambda;
+			lambda = mue;
+			f_lambda = f_mue;
+			mue = a + goldenRatio * (b - a);
+			f_mue = f.value(mue);
+		}
+	}
+
+	return (mue - lambda) / 2;
 }
 
-void GS::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon, string fileName) {
-	//TODO Ausgabe des Optimierungsverlaufs in eine Datei.
+void GS::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon,
+		ofstream& myfile) {
+	// Ausgabe des Optimierungsverlaufs in eine Datei.
+	double goldenRatio = (sqrt(5) - 1) / 2;
+	double interval = (b - a) * epsilon;
+	double lambda, f_lambda;
+	double mue, f_mue;
+	int Iteration=0;
+
+	lambda = a + (1 - goldenRatio) * (b - a);
+	f_lambda = f.value(lambda);
+	mue = a + goldenRatio * (b - a);
+	f_mue = f.value(mue);
+
+	while ((b - a) > interval) {
+		myfile<<Iteration<<";"<<a<<";"<<lambda<<";"<<mue<<";"<<b<<";"<<f_lambda<<";"<<f_mue<<endl;
+		Iteration++;
+		if (f_lambda < f_mue) {
+			b = mue;
+			mue = lambda;
+			f_mue = f_lambda;
+			lambda = a + (1 - goldenRatio) * (b - a);
+			f_lambda = f.value(lambda);
+		} else {
+			a = lambda;
+			lambda = mue;
+			f_lambda = f_mue;
+			mue = a + goldenRatio * (b - a);
+			f_mue = f.value(mue);
+		}
+	// Iteration;a;lambda;mue;b;f_lambda;f_mue
+	}
+	myfile<<Iteration<<";"<<a<<";"<<lambda<<";"<<mue<<";"<<b<<";"<<f_lambda<<";"<<f_mue<<endl;
 }
 
 } /* namespace std */
-
 

@@ -19,7 +19,7 @@ public:
 	virtual double findMinimum(double a, double b, Funktion &f, double epsilon)
 			override;
 	virtual void makeGnuPlotFile(double a, double b, Funktion &f,
-			double epsilon, string fileName) override;
+			double epsilon, ofstream& myfile) override;
 };
 
 } /* namespace std */

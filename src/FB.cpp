@@ -39,27 +39,27 @@ int GetFibonacci(int position) //Returns Fibonacci Number of the given Position.
 double FB::findMinimum(double a, double b, Funktion &f, double epsilon) {
 	double lambda;
 	double mue;
-	double interval = (b - a) * epsilon;
+	//double interval = (b - a) * epsilon;
 	int i = 1;
 	int fib_i = GetFibonacci(i);
-	while (1 / (fib_i) > interval) //find the Fibonacci Number required to reach desired epsilon.
-	{
+	while ((1.0/(fib_i)) > epsilon){
 		i++;
 		fib_i = GetFibonacci(i); //This is not an ideal solution in terms of effiency, might come back to it later.
-	};
+	}
 	cerr << "Iterationen: " << i << endl;
 	int k = 1;
 	mue = a + (b - a) * (GetFibonacci(i - k - 1) / GetFibonacci(i - k + 1));
 	lambda = a + (b - a) * (GetFibonacci(i - k) / GetFibonacci(i - k + 1));
 	while (i > 0) {
 		if (f.value(lambda) < f.value(mue)) {
+			cerr << "looking below " << f.value(lambda) << " with lambda at" << lambda << endl;
 			b = mue;
 			mue = lambda;
 			k++;
 			i--;
-			lambda = a
-					+ (b - a) * (GetFibonacci(i - k) / GetFibonacci(i - k + 1));
+			lambda = a + (b - a) * (GetFibonacci(i - k) / GetFibonacci(i - k + 1));
 		} else {
+			cerr << "looking above " << f.value(mue) << " with mue at" << mue << endl;
 			a = lambda;
 			lambda = mue;
 			k++;

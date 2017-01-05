@@ -21,10 +21,10 @@
 
 using namespace std;
 
-void auswerten(Funktion &f, InterfaceOptVerfahren &v, double x, double a, double b, double eps) {
+void auswerten(Funktion &f, InterfaceOptVerfahren &v, double a, double b, double eps) {
+	double x = v.findMinimum(a, b, f, eps);
 
-	cout << "x-Wert: " << x << " Funktionswert: " << f.value(x) << " Min: "
-			<< v.findMinimum(a, b, f, eps) << endl; // prints Test Value
+	cout << "Min: " << x << " Funktionswert: " << f.value(x)  << endl; // prints Test Value
 }
 bool match(const std::string& s, const char * c) {
 	return c && s.length() > 0 && s.length() <= std::strlen(c)
@@ -79,7 +79,6 @@ int main() {
 	FB fibo;
 	GS gs;
 	Funktion* f;
-	double x = 3.3;
 	double a = 0.0;
 	double b = 10.0;
 	double epsilon = 0.0004;
@@ -113,7 +112,7 @@ int main() {
 
 				if (f)
 					cmdstream >> a >> b >> epsilon;
-					auswerten(*f, bisec, x, a , b , epsilon);
+					auswerten(*f, bisec, a , b , epsilon);
 
 			} else if (match(cmd, "FB")) {
 				std::string funcmd;
@@ -121,20 +120,20 @@ int main() {
 				f = chooseFunction(funcmd, f_1, f_2, f_3, f_4, f_5, f_6);
 				if (f)
 					cmdstream >> a >> b >> epsilon;
-					auswerten(*f, fibo, x, a , b , epsilon);
+					auswerten(*f, fibo, a , b , epsilon);
 			} else if (match(cmd, "GS")) {
 				std::string funcmd;
 				cmdstream >> funcmd;
 				cmdstream >> a >> b >> epsilon;
 				f = chooseFunction(funcmd, f_1, f_2, f_3, f_4, f_5, f_6);
 				if (f)
-					auswerten(*f, gs, x, a , b , epsilon);
+					auswerten(*f, gs, a , b , epsilon);
 			} else {
 				std::cout << cmd << "? try 'help'";
 			}
 
 		} catch (CalculationException& e) {
-			std::cout << "catched ContainerException \"" << e.what() << "\"";
+			std::cout << "catched FunctionException \"" << e.what() << "\"";
 
 		} catch (std::exception& e) {
 			std::cout << "catched std::exception \"" << e.what() << "\"";

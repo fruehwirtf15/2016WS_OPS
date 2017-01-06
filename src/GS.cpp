@@ -56,7 +56,7 @@ void GS::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon,
 	double interval = (b - a) * epsilon;
 	double lambda, f_lambda;
 	double mue, f_mue;
-	int Iteration=0;
+	int Iteration = 0;
 
 	lambda = a + (1 - goldenRatio) * (b - a);
 	f_lambda = f.value(lambda);

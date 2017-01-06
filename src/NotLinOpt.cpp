@@ -132,6 +132,10 @@ int main() {
 				if (f) {
 					cmdstream >> a >> b >> epsilon;
 					auswerten(*f, bisec, a, b, epsilon);
+					cmdstream >> filename;
+					if (filename != "") {
+						ausgeben(*f, bisec, a, b, epsilon, filename);
+					}
 				}
 
 			} else if (match(cmd, "FB")) {
@@ -141,6 +145,10 @@ int main() {
 				if (f) {
 					cmdstream >> a >> b >> epsilon;
 					auswerten(*f, fibo, a, b, epsilon);
+					cmdstream >> filename;
+					if (filename != "") {
+						ausgeben(*f, fibo, a, b, epsilon, filename);
+					}
 				}
 			} else if (match(cmd, "GS")) {
 				std::string funcmd;

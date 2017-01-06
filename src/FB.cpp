@@ -10,7 +10,11 @@
 namespace std {
 
 FB::FB() {
-	// TODO Auto-generated constructor stub
+	GetFibonacci[0] = 1;
+	GetFibonacci[1] = 1;
+	for (int i = 2;i<90;i++){
+		GetFibonacci[i] = GetFibonacci[i-1] + GetFibonacci[i-2];
+	}
 
 }
 
@@ -18,53 +22,63 @@ FB::~FB() {
 	// TODO Auto-generated destructor stub
 }
 
-int GetFibonacci(int position) //Returns Fibonacci Number of the given Position.
-		{
-	int FibonacciNumber = 1;
-	int LastFibonacci = 1;
-	for (int i = 0; i <= position; i++) {
-		if (i == 0) {
-			FibonacciNumber = 1;
-			LastFibonacci = 1;
-		} else {
-			int help = FibonacciNumber;
-			FibonacciNumber = FibonacciNumber + LastFibonacci;
-			LastFibonacci = help;
-		}
-	}
-	return FibonacciNumber;
-
+// Abbildung der Achse von long long auf double
+double FB::transform(long long fibo){
+	return start + Interval * fibo;
 }
 
+
 double FB::findMinimum(double a, double b, Funktion &f, double epsilon) {
-	double lambda;
-	double mue;
-	//double interval = (b - a) * epsilon;
+	double lambda, f_lambda;
+	double mue, f_mue;
+	long long a_f, lambda_f,mue_f,b_f;
+
+	// Initialisierungen
+	FB::Interval = (b - a) * epsilon;
+	FB::start = a;
 	int i = 1;
-	int fib_i = GetFibonacci(i);
-	while ((1.0/(fib_i)) > epsilon){
+	int fib_i = GetFibonacci[i];
+    // ermitteln der erforderlichen Iterationen um die geforderte Genauigkeit zu bekommen
+	while ((1.0 / (fib_i)) > epsilon) {
 		i++;
-		fib_i = GetFibonacci(i); //This is not an ideal solution in terms of effiency, might come back to it later.
+		fib_i = GetFibonacci[i]; //This is not an ideal solution in terms of effiency, might come back to it later.
 	}
 	cerr << "Iterationen: " << i << endl;
+
+	// Problem auf Fibonachi Raum abbilden
+	a_f = 0;
+	b_f = GetFibonacci[i];
+
 	int k = 1;
-	mue = a + (b - a) * (GetFibonacci(i - k - 1) / GetFibonacci(i - k + 1));
-	lambda = a + (b - a) * (GetFibonacci(i - k) / GetFibonacci(i - k + 1));
-	while (i > 0) {
-		if (f.value(lambda) < f.value(mue)) {
-			cerr << "looking below " << f.value(lambda) << " with lambda at" << lambda << endl;
-			b = mue;
-			mue = lambda;
+
+	lambda_f = a_f + ((b_f - a_f) * GetFibonacci[i - k - 1]) / GetFibonacci[i - k + 1];
+	lambda = transform(lambda_f);
+	f_lambda = f.value(lambda);
+
+	mue_f = a_f + ((b_f - a_f) * GetFibonacci[i - k]) / GetFibonacci[i - k + 1];
+	mue = transform(mue_f);
+	f_mue = f.value(mue);
+
+
+	while (k < i) {
+		if (f_lambda < f_mue) {
+			// alles rechts von mue faellt weg, lambda wird zu mue
+			b_f = mue_f;
+			mue_f = lambda_f;
+			f_mue = f_lambda;
+			lambda_f = a_f + ((b_f - a_f) * GetFibonacci[i - k - 1]) / GetFibonacci[i - k + 1];
+			lambda = transform(lambda_f);
+			f_lambda = f.value(lambda);
 			k++;
-			i--;
-			lambda = a + (b - a) * (GetFibonacci(i - k) / GetFibonacci(i - k + 1));
 		} else {
-			cerr << "looking above " << f.value(mue) << " with mue at" << mue << endl;
-			a = lambda;
-			lambda = mue;
+			// alles links von lambda faellt weg, mue wird zu lambda
+			a_f = lambda_f;
+			lambda_f = mue_f;
+			f_lambda = f_mue;
+			mue_f = a_f + ((b_f - a_f) * GetFibonacci[i - k]) / GetFibonacci[i - k + 1];
+			mue = transform(mue_f);
+			f_mue = f.value(mue);
 			k++;
-			i--;
-			mue = a + (b - a) * (GetFibonacci(i - k - 1)/ GetFibonacci(i - k + 1));
 		}
 
 	}
@@ -72,8 +86,62 @@ double FB::findMinimum(double a, double b, Funktion &f, double epsilon) {
 }
 
 void FB::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon,
-		ofstream& file) {
-//TODO Ausgabe des Optimierungsverlaufs in eine Datei.
+		ofstream& myfile) {
+	double lambda, f_lambda;
+	double mue, f_mue;
+	long long a_f, lambda_f,mue_f,b_f;
+
+	FB::Interval = (b - a) * epsilon;
+	FB::start = a;
+	int Iteration = 0;
+	int i = 1;
+	int fib_i = GetFibonacci[i];
+
+	while ((1.0 / (fib_i)) > epsilon) {
+		i++;
+		fib_i = GetFibonacci[i]; //This is not an ideal solution in terms of effiency, might come back to it later.
+	}
+	cerr << "Iterationen: " << i << endl;
+
+	a_f = 0;
+	b_f = GetFibonacci[i];
+
+	int k = 1;
+
+	lambda_f = a_f + ((b_f - a_f) * GetFibonacci[i - k - 1]) / GetFibonacci[i - k + 1];
+	lambda = transform(lambda_f);
+	f_lambda = f.value(lambda);
+
+	mue_f = a_f + ((b_f - a_f) * GetFibonacci[i - k]) / GetFibonacci[i - k + 1];
+	mue = transform(mue_f);
+	f_mue = f.value(mue);
+
+	myfile << Iteration << ";" << transform(a_f) << ";" << lambda << ";" << mue<< ";" << transform(b_f)
+			<< ";" << f_lambda << ";" << f_mue << endl;
+	while (k < i) {
+		Iteration++;
+		if (f_lambda < f_mue) {
+			// alles rechts von mue faellt weg, lambda wird zu mue
+			b_f = mue_f;
+			mue_f = lambda_f;
+			f_mue = f_lambda;
+			lambda_f = a_f + ((b_f - a_f) * GetFibonacci[i - k - 1]) / GetFibonacci[i - k + 1];
+			lambda = transform(lambda_f);
+			f_lambda = f.value(lambda);
+			k++;
+		} else {
+			// alles links von lambda faellt weg, mue wird zu lambda
+			a_f = lambda_f;
+			lambda_f = mue_f;
+			f_lambda = f_mue;
+			mue_f = a_f + ((b_f - a_f) * GetFibonacci[i - k]) / GetFibonacci[i - k + 1];
+			mue = transform(mue_f);
+			f_mue = f.value(mue);
+			k++;
+		}
+		myfile << Iteration << ";" << transform(a_f) << ";" << lambda << ";" << mue<< ";" << transform(b_f)
+				<< ";" << f_lambda << ";" << f_mue << endl;
+	}
 }
 
 } /* namespace std */

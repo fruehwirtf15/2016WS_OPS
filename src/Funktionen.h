@@ -24,7 +24,7 @@ class f1: public Funktion {
 public:
 
 	double value(double x) {
-		//sleepcp(30);
+		sleepcp(30);
         return x * x - 1;
     }
 };

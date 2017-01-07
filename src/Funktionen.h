@@ -9,6 +9,7 @@
 #define FUNKTIONEN_H_
 
 #include <time.h>
+#include <cmath>
 //TODO Implementieren der Testfunktionen nach 8.1 Eindimensionale Funktionen Seite 42
 
 void sleepcp(int milliseconds) // cross-platform sleep function
@@ -25,7 +26,7 @@ public:
 
 	double value(double x) {
 		//sleepcp(30);
-        return x * x - 1;
+        return 2*pow(x,2) + exp(-2*x);
     }
 };
 
@@ -33,7 +34,7 @@ class f2: public Funktion {
 public:
 	double value(double x) {
 		// TODO Implement f2
-		return 2*x * x - 1;
+		return (pow(x,4)/4) - pow(x,2) + 2*x;
 	} //f(x)
 
 };
@@ -41,14 +42,14 @@ class f3: public Funktion {
 public:
 	double value(double x) {
 		// TODO Implement f1
-		return 3*x * x - 1;
+		return pow(x,5) + 5*pow(x,4) + 5*pow(x,3) - 5*pow(x,2) - 6*x;
 	} //f(x)
 };
 class f4: public Funktion {
 public:
 	double value(double x) {
 		// TODO Implement f1
-		return 4*x * x - 1;
+		return pow(x,4) - 16*pow(x,2) - 1;
 	} //f(x)
 
 };
@@ -56,7 +57,7 @@ class f5: public Funktion {
 public:
 	double value(double x) {
 		// TODO Implement f1
-		return 5*x * x - 1;
+		return log(abs(pow(x,3) + 5*x - 5));
 	} //f(x)
 
 };
@@ -64,7 +65,7 @@ class f6: public Funktion {
 public:
 	double value(double x) {
 		// TODO Implement f6
-		return 6*x * x - 1;
+		return log(abs(pow(x,4) - 16*pow(x,2) - 1));
 	} //f(x)
 
 };

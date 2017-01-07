@@ -46,7 +46,7 @@ double GS::findMinimum(double a, double b, Funktion &f, double epsilon) {
 		}
 	}
 
-	return (mue - lambda) / 2;
+	return a + ((b - a)/2);;
 }
 
 void GS::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon,

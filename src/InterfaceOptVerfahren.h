@@ -20,6 +20,7 @@ public:
 	virtual ~InterfaceOptVerfahren();
 	virtual double findMinimum(double a, double b, Funktion &f, double epsilon) = 0;
 	virtual void makeGnuPlotFile(double a, double b, Funktion &f, double epsilon, ofstream& myfile) = 0;
+	virtual string getName() = 0;
 };
 
 } /* namespace std */

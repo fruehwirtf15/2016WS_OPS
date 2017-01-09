@@ -30,7 +30,9 @@ void auswerten(Funktion &f, InterfaceOptVerfahren &v, double a, double b,
 
 void ausgeben(Funktion &f, InterfaceOptVerfahren &v, double a, double b,
 		double eps, string filename) {
+	string plotCommand;
 	ofstream myfile;
+	ofstream cmdfile;
 	myfile.open(filename);
 	v.makeGnuPlotFile(a, b, f, eps, myfile);
 	double x = v.findMinimum(a, b, f, eps);
@@ -38,6 +40,21 @@ void ausgeben(Funktion &f, InterfaceOptVerfahren &v, double a, double b,
 	cout << "Min: " << x << " Funktionswert: " << f.value(x) << endl; // prints Test Value
 	myfile.close();
 	cout << " written to: " << filename;
+
+	plotCommand = "gnuplot -p -e \"plot 'data.txt'\"";
+	cmdfile.open("Cmdfile");
+	plotCommand =  "plot '"+ filename +"' using 2 title 'a' with lines";
+	cmdfile<<"set title '"<<v.getName()<<"'"<<endl;
+	cmdfile<<"set xlabel 'Iteration'"<<endl;
+	cmdfile<<"set grid"<<endl;
+	cmdfile <<"plot '"<< filename << "' using 2 title 'a' with lines, \\"<<endl;
+	cmdfile <<"'"<< filename << "' using 3 title 'lambda' with lines, \\"<<endl;
+	cmdfile <<"'"<< filename << "' using 4 title 'my' with lines, \\"<<endl;
+	cmdfile <<"'"<< filename << "' using 5 title 'b' with lines"<<endl;
+	cmdfile << "pause 5"<<endl;
+	cmdfile.close();
+	system("gnuplot < Cmdfile");
+
 }
 bool match(const std::string& s, const char * c) {
 	return c && s.length() > 0 && s.length() <= std::strlen(c)

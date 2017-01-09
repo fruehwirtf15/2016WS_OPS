@@ -41,7 +41,7 @@ double BI::findMinimum(double a, double b, Funktion &f, double epsilon) {
 		f_lambda = f.value(lambda);
 	}
 
-	return (mue - lambda) / 2;
+	return (mue + lambda) / 2;
 }
 
 void BI::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon, ofstream& myfile) {
@@ -58,7 +58,7 @@ void BI::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon, ofstre
 	f_mue = f.value(mue);
 
 	while ((b - a) > interval) {
-		myfile<<Iteration<<";"<<a<<";"<<lambda<<";"<<mue<<";"<<b<<";"<<f_lambda<<";"<<f_mue<<endl;
+		myfile<<Iteration<<"  "<<a<<"  "<<lambda<<"  "<<mue<<"  "<<b<<"  "<<f_lambda<<"  "<<f_mue<<endl;
 		Iteration++;
 		if (f_lambda < f_mue) {
 			b = mue;
@@ -70,7 +70,7 @@ void BI::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon, ofstre
 		lambda = a + (1 - Ratio) * (b - a);
 		f_lambda = f.value(lambda);
 	}
-	myfile<<Iteration<<";"<<a<<";"<<lambda<<";"<<mue<<";"<<b<<";"<<f_lambda<<";"<<f_mue<<endl;
+	myfile<<Iteration<<"  "<<a<<"  "<<lambda<<"  "<<mue<<"  "<<b<<"  "<<f_lambda<<"  "<<f_mue<<endl;
 }
 
 } /* namespace std */

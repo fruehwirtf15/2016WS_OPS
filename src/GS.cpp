@@ -46,7 +46,7 @@ double GS::findMinimum(double a, double b, Funktion &f, double epsilon) {
 		}
 	}
 
-	return a + ((b - a)/2);;
+	return (lambda + mue) / 2;
 }
 
 void GS::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon,
@@ -64,7 +64,7 @@ void GS::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon,
 	f_mue = f.value(mue);
 
 	while ((b - a) > interval) {
-		myfile<<Iteration<<";"<<a<<";"<<lambda<<";"<<mue<<";"<<b<<";"<<f_lambda<<";"<<f_mue<<endl;
+		myfile<<Iteration<<"  "<<a<<"  "<<lambda<<"  "<<mue<<"  "<<b<<"  "<<f_lambda<<"  "<<f_mue<<endl;
 		Iteration++;
 		if (f_lambda < f_mue) {
 			b = mue;
@@ -81,7 +81,7 @@ void GS::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon,
 		}
 	// Iteration;a;lambda;mue;b;f_lambda;f_mue
 	}
-	myfile<<Iteration<<";"<<a<<";"<<lambda<<";"<<mue<<";"<<b<<";"<<f_lambda<<";"<<f_mue<<endl;
+	myfile<<Iteration<<"  "<<a<<"  "<<lambda<<"  "<<mue<<"  "<<b<<"  "<<f_lambda<<"  "<<f_mue<<endl;
 }
 
 } /* namespace std */

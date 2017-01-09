@@ -33,19 +33,18 @@ double FB::findMinimum(double a, double b, Funktion &f, double epsilon) {
 	double mue, f_mue;
 	long long a_f, lambda_f,mue_f,b_f;
 
-	// Initialisierungen
 	FB::Interval = (b - a) * epsilon;
 	FB::start = a;
+	int Iteration = 0;
 	int i = 1;
 	int fib_i = GetFibonacci[i];
-    // ermitteln der erforderlichen Iterationen um die geforderte Genauigkeit zu bekommen
+
 	while ((1.0 / (fib_i)) > epsilon) {
 		i++;
 		fib_i = GetFibonacci[i]; //This is not an ideal solution in terms of effiency, might come back to it later.
 	}
 	cerr << "Iterationen: " << i << endl;
 
-	// Problem auf Fibonachi Raum abbilden
 	a_f = 0;
 	b_f = GetFibonacci[i];
 
@@ -59,8 +58,8 @@ double FB::findMinimum(double a, double b, Funktion &f, double epsilon) {
 	mue = transform(mue_f);
 	f_mue = f.value(mue);
 
-
 	while (k < i) {
+		Iteration++;
 		if (f_lambda < f_mue) {
 			// alles rechts von mue faellt weg, lambda wird zu mue
 			b_f = mue_f;
@@ -80,9 +79,8 @@ double FB::findMinimum(double a, double b, Funktion &f, double epsilon) {
 			f_mue = f.value(mue);
 			k++;
 		}
-
 	}
-	return (lambda - mue) / 2;
+	return (lambda + mue) / 2;
 }
 
 void FB::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon,
@@ -116,8 +114,8 @@ void FB::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon,
 	mue = transform(mue_f);
 	f_mue = f.value(mue);
 
-	myfile << Iteration << ";" << transform(a_f) << ";" << lambda << ";" << mue<< ";" << transform(b_f)
-			<< ";" << f_lambda << ";" << f_mue << endl;
+	myfile << Iteration << "  " << transform(a_f) << "  " << lambda << "  " << mue<< "  " << transform(b_f)
+			<< "  " << f_lambda << "  " << f_mue << endl;
 	while (k < i) {
 		Iteration++;
 		if (f_lambda < f_mue) {
@@ -139,8 +137,8 @@ void FB::makeGnuPlotFile(double a, double b, Funktion &f, double epsilon,
 			f_mue = f.value(mue);
 			k++;
 		}
-		myfile << Iteration << ";" << transform(a_f) << ";" << lambda << ";" << mue<< ";" << transform(b_f)
-				<< ";" << f_lambda << ";" << f_mue << endl;
+		myfile << Iteration << "  " << transform(a_f) << "  " << lambda << "  " << mue<< "  " << transform(b_f)
+				<< "  " << f_lambda << "  " << f_mue << endl;
 	}
 }
 

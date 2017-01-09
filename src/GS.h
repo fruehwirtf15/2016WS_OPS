@@ -20,6 +20,7 @@ public:
 			override;
 	virtual void makeGnuPlotFile(double a, double b, Funktion &f,
 			double epsilon, ofstream& myfile ) override;
+	virtual string getName() override {return "Goldener Schnitt Verfahren";} ;
 };
 
 } /* namespace std */

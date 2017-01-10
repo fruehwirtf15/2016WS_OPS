@@ -50,9 +50,9 @@ void ausgeben(Funktion &f, InterfaceOptVerfahren &v, double a, double b,
 // Make png cmd-File
 
 	cmdFile.open("Cmdfile");
-	cmdFile << "set term png"<<endl;
+	cmdFile << "set terminal png size 1500,1200"<<endl;
 	cmdFile << "set output '"<<pngName<<"'"<<endl;
-	cmdFile<< "set title '" << v.getName() << "'" << std::endl;
+	cmdFile<<  "set title '" << v.getName() << "'" << std::endl;
 	cmdFile << "set xlabel 'Iteration'" << endl;
 	cmdFile << "set grid" << endl;
 	cmdFile << "plot '" << filename << "' using 2 title 'a' with lines, \\"
@@ -68,7 +68,7 @@ void ausgeben(Funktion &f, InterfaceOptVerfahren &v, double a, double b,
 
 // Make X-Screen cmd-File
 	cmdFile.open("Cmdfile");
-	cmdFile<< "set title '" << v.getName() << "'" << std::endl;
+	cmdFile<<  "set title '" << v.getName() << "'" << std::endl;
 	cmdFile << "set xlabel 'Iteration'" << endl;
 	cmdFile << "set grid" << endl;
 	cmdFile << "plot '" << filename << "' using 2 title 'a' with lines, \\"

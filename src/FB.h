@@ -13,10 +13,10 @@
 namespace std {
 
 class FB: public InterfaceOptVerfahren {
-	long long GetFibonacci[90];
+	unsigned long long GetFibonacci[90];
 	double Interval = 1.0;
 	double start = 0.0;
-	double transform(long long fibo);
+	double transform(unsigned long long fibo);
 public:
 	FB();
 	virtual ~FB();

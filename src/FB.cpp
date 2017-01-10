@@ -23,7 +23,7 @@ FB::~FB() {
 }
 
 // Abbildung der Achse von long long auf double
-double FB::transform(long long fibo){
+double FB::transform(unsigned long long fibo){
 	return start + Interval * fibo;
 }
 
@@ -33,22 +33,21 @@ double FB::findMinimum(double a, double b, Funktion &f, double epsilon,
 		ofstream& myfile) {
 	double lambda, f_lambda;
 	double mue, f_mue;
-	long long a_f, lambda_f,mue_f,b_f;
+	unsigned long long a_f, lambda_f,mue_f,b_f;
 
-	FB::Interval = (b - a) * epsilon;
 	FB::start = a;
 	int Iteration = 0;
-	int i = 1;
-	int fib_i = GetFibonacci[i];
+	int i = 0;
+	unsigned long long fib_i = 0;
+	unsigned long long  anzahlIntervalle = (unsigned long long) (1.0/epsilon);
 
-	while ((1.0 / (fib_i)) > epsilon) {
-		i++;
-		fib_i = GetFibonacci[i]; //This is not an ideal solution in terms of effiency, might come back to it later.
-	}
+	while (anzahlIntervalle > (fib_i = GetFibonacci[++i]));
+
 	cout << "Iterationen: " << i << endl;
-
+	epsilon = 1.0 / (double) fib_i;
+	FB::Interval = (b - a) * epsilon;
 	a_f = 0;
-	b_f = GetFibonacci[i];
+	b_f = fib_i;
 
 	int k = 1;
 
@@ -83,10 +82,10 @@ double FB::findMinimum(double a, double b, Funktion &f, double epsilon,
 			f_mue = f.value(mue);
 			k++;
 		}
-		if (myfile.is_open()) myfile << Iteration << "  " << transform(a_f) << "  " << lambda << "  " << mue<< "  " << transform(b_f)
+		if (myfile.is_open()) myfile << Iteration << "  " << transform(a_f) << "  " << transform(lambda_f) << "  " << transform(mue_f)<< "  " << transform(b_f)
 				<< "  " << f_lambda << "  " << f_mue << endl;
 	}
-	return (mue + lambda) / 2;
+	return (transform(mue_f) + transform(lambda_f)) / 2;
 }
 
 } /* namespace std */

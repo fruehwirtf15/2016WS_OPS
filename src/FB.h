@@ -20,9 +20,8 @@ class FB: public InterfaceOptVerfahren {
 public:
 	FB();
 	virtual ~FB();
-	virtual double findMinimum(double a, double b, Funktion &f, double epsilon)
-			override;
-	virtual void makeGnuPlotFile(double a, double b, Funktion &f,
+	using InterfaceOptVerfahren::findMinimum;
+	virtual double findMinimum(double a, double b, Funktion &f,
 			double epsilon, ofstream& myfile) override;
 	virtual string getName() override {return "Fibonacci Verfahren";} ;
 };

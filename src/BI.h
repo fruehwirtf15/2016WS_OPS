@@ -16,9 +16,8 @@ class BI: public InterfaceOptVerfahren {
 public:
 	BI();
 	virtual ~BI();
-	virtual double findMinimum(double a, double b, Funktion &f, double epsilon)
-			override;
-	virtual void makeGnuPlotFile(double a, double b, Funktion &f,
+	using InterfaceOptVerfahren::findMinimum;
+	virtual double findMinimum(double a, double b, Funktion &f,
 			double epsilon, ofstream& myfile) override;
 	virtual string getName() override {return "Bisektions Verfahren";} ;
 };

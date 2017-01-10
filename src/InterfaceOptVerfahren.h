@@ -18,8 +18,13 @@ class InterfaceOptVerfahren {
 public:
 	InterfaceOptVerfahren();
 	virtual ~InterfaceOptVerfahren();
-	virtual double findMinimum(double a, double b, Funktion &f, double epsilon) = 0;
-	virtual void makeGnuPlotFile(double a, double b, Funktion &f, double epsilon, ofstream& myfile) = 0;
+	virtual double findMinimum(double a, double b, Funktion &f, double epsilon){
+		ofstream myfile;
+		myfile.open("dummy");
+	    myfile.close();
+		return findMinimum( a, b, f, epsilon, myfile);
+	};
+	virtual double findMinimum(double a, double b, Funktion &f, double epsilon, ofstream& myfile) = 0;
 	virtual string getName() = 0;
 };
 

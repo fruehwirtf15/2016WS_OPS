@@ -10,6 +10,8 @@
 
 #include <time.h>
 #include <cmath>
+#define DATA_EXT  ".txt"
+#define PLOT_EXT  ".png"
 
 void sleepcp(int milliseconds) // cross-platform sleep function
 {

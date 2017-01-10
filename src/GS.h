@@ -16,9 +16,8 @@ class GS: public InterfaceOptVerfahren {
 public:
 	GS();
 	virtual ~GS();
-	virtual double findMinimum(double a, double b, Funktion &f, double epsilon)
-			override;
-	virtual void makeGnuPlotFile(double a, double b, Funktion &f,
+	using InterfaceOptVerfahren::findMinimum;
+	virtual double findMinimum(double a, double b, Funktion &f,
 			double epsilon, ofstream& myfile ) override;
 	virtual string getName() override {return "Goldener Schnitt Verfahren";} ;
 };

@@ -28,31 +28,53 @@ void auswerten(Funktion &f, InterfaceOptVerfahren &v, double a, double b,
 	cout << "Min: " << x << " Funktionswert: " << f.value(x) << endl; // prints Test Value
 }
 
+
 void ausgeben(Funktion &f, InterfaceOptVerfahren &v, double a, double b,
 		double eps, string filename) {
-	string plotCommand;
-	ofstream myfile;
-	ofstream cmdfile;
-	myfile.open(filename);
-	v.makeGnuPlotFile(a, b, f, eps, myfile);
-	double x = v.findMinimum(a, b, f, eps);
+
+	ofstream dataFile;
+	ofstream cmdFile;
+	string pngName = ".//data//" + filename + PLOT_EXT;
+	filename = ".//data//" + filename + DATA_EXT;
+	dataFile.open(filename);
+
+	double x = v.findMinimum(a, b, f, eps, dataFile);
 
 	cout << "Min: " << x << " Funktionswert: " << f.value(x) << endl; // prints Test Value
-	myfile.close();
+	dataFile.close();
 	cout << " written to: " << filename;
+// Make png cmd-File
 
-	plotCommand = "gnuplot -p -e \"plot 'data.txt'\"";
-	cmdfile.open("Cmdfile");
-	plotCommand =  "plot '"+ filename +"' using 2 title 'a' with lines";
-	cmdfile<<"set title '"<<v.getName()<<"'"<<endl;
-	cmdfile<<"set xlabel 'Iteration'"<<endl;
-	cmdfile<<"set grid"<<endl;
-	cmdfile <<"plot '"<< filename << "' using 2 title 'a' with lines, \\"<<endl;
-	cmdfile <<"'"<< filename << "' using 3 title 'lambda' with lines, \\"<<endl;
-	cmdfile <<"'"<< filename << "' using 4 title 'my' with lines, \\"<<endl;
-	cmdfile <<"'"<< filename << "' using 5 title 'b' with lines"<<endl;
-	cmdfile << "pause 5"<<endl;
-	cmdfile.close();
+	cmdFile.open("Cmdfile");
+	cmdFile << "set term png"<<endl;
+	cmdFile << "set output '"<<pngName<<"'"<<endl;
+	cmdFile<< "set title '" << v.getName() << "'" << std::endl;
+	cmdFile << "set xlabel 'Iteration'" << endl;
+	cmdFile << "set grid" << endl;
+	cmdFile << "plot '" << filename << "' using 2 title 'a' with lines, \\"
+			<< endl;
+	cmdFile << "'" << filename << "' using 3 title 'lambda' with lines, \\"
+			<< endl;
+	cmdFile << "'" << filename << "' using 4 title 'my' with lines, \\" << endl;
+	cmdFile << "'" << filename << "' using 5 title 'b' with lines" << endl;
+	cmdFile << "exit"<<endl;
+	cmdFile.close();
+	system("gnuplot < Cmdfile");
+
+
+// Make X-Screen cmd-File
+	cmdFile.open("Cmdfile");
+	cmdFile<< "set title '" << v.getName() << "'" << std::endl;
+	cmdFile << "set xlabel 'Iteration'" << endl;
+	cmdFile << "set grid" << endl;
+	cmdFile << "plot '" << filename << "' using 2 title 'a' with lines, \\"
+			<< endl;
+	cmdFile << "'" << filename << "' using 3 title 'lambda' with lines, \\"
+			<< endl;
+	cmdFile << "'" << filename << "' using 4 title 'my' with lines, \\" << endl;
+	cmdFile << "'" << filename << "' using 5 title 'b' with lines" << endl;
+	cmdFile << "pause 5"<<endl;
+	cmdFile.close();
 	system("gnuplot < Cmdfile");
 
 }
@@ -63,11 +85,11 @@ bool match(const std::string& s, const char * c) {
 
 const char helpstr[] =
 		"Usage: <Methode> <Function> <Lower Bound> <Upper Bound> <Epsilon> [outputfile]\n"
-				"Example: BI f1 0.5 10.5 0.0003\n"
+				"Example: BI f1 0.5 10.5 0.0003 output\n\n"
 				"Methods to select\n"
 				"BI ............................ Bisection method\n"
 				"FB ............................ Fibonacci methode\n"
-				"GS ............................ Golden ratio methode\n"
+				"GS ............................ Golden ratio methode\n\n"
 				"Functions to select\n"
 				"f1 .................. 2x^2 + e^(-2x)\n"
 				"f2 .................. (x^4)/4 - x^2 + 2x\n"
@@ -78,8 +100,8 @@ const char helpstr[] =
 				"quit .......................... quit program\n\n"
 				"arguments surrounded by [] are optional\n";
 
-Funktion* chooseFunction(std::string funcmd, f1 f_1, f2 f_2, f3 f_3, f4 f_4,
-		f5 f_5, f6 f_6) {
+Funktion* chooseFunction(const std::string funcmd, f1 f_1,  f2 f_2,  f3  f_3,  f4 f_4,
+		 f5 f_5,  f6 f_6) {
 
 	if (funcmd.length() == 0) {
 	} else if (match(funcmd, "f1")) {
@@ -109,15 +131,14 @@ int main() {
 	BI bisec;
 	FB fibo;
 	GS gs;
-	Funktion* f;
-	double a = 0.0;
-	double b = 10.0;
-	double epsilon = 0.0004;
 
 	std::cout << helpstr;
 	while (true) {
 		string filename = "";
-		f = nullptr;
+		Funktion* f = nullptr;
+		double a = 0.0;
+		double b = 10.0;
+		double epsilon = 0.0004;
 
 		std::cout << std::endl << "> ";
 
@@ -141,43 +162,34 @@ int main() {
 				break;
 			} else if (match(cmd, "help") || cmd == "?") {
 				std::cout << helpstr;
-			} else if (match(cmd, "BI")) {
+			} else if (match(cmd, "BI") || match(cmd, "GS") || match(cmd, "FB")) {
+				InterfaceOptVerfahren* verfahren = nullptr;
+				if (match(cmd, "BI")){
+					verfahren = &bisec;
+				}
+				else if (match(cmd, "GS")){
+					verfahren = &gs;
+				}
+				else if (match(cmd, "FB")){
+					verfahren = &fibo;
+				}
 				std::string funcmd;
 				cmdstream >> funcmd;
 				f = chooseFunction(funcmd, f_1, f_2, f_3, f_4, f_5, f_6);
-
 				if (f) {
 					cmdstream >> a >> b >> epsilon;
-					auswerten(*f, bisec, a, b, epsilon);
+					if (a > b) swap(a,b);
+					if (epsilon > (b-a) || !epsilon) epsilon = (b-a) / 1000.0;
 					cmdstream >> filename;
 					if (filename != "") {
-						ausgeben(*f, bisec, a, b, epsilon, filename);
+						ausgeben(*f, *verfahren, a, b, epsilon, filename);
+					}
+					else {
+						auswerten(*f, *verfahren, a, b, epsilon);
 					}
 				}
-
-			} else if (match(cmd, "FB")) {
-				std::string funcmd;
-				cmdstream >> funcmd;
-				f = chooseFunction(funcmd, f_1, f_2, f_3, f_4, f_5, f_6);
-				if (f) {
-					cmdstream >> a >> b >> epsilon;
-					auswerten(*f, fibo, a, b, epsilon);
-					cmdstream >> filename;
-					if (filename != "") {
-						ausgeben(*f, fibo, a, b, epsilon, filename);
-					}
-				}
-			} else if (match(cmd, "GS")) {
-				std::string funcmd;
-				cmdstream >> funcmd;
-				f = chooseFunction(funcmd, f_1, f_2, f_3, f_4, f_5, f_6);
-				if (f) {
-					cmdstream >> a >> b >> epsilon;
-					auswerten(*f, gs, a, b, epsilon);
-					cmdstream >> filename;
-					if (filename != "") {
-						ausgeben(*f, gs, a, b, epsilon, filename);
-					}
+				else {
+					std::cout << cmd <<" " << funcmd << "? try 'help'";
 				}
 
 			} else {

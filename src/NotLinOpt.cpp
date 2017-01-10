@@ -34,6 +34,10 @@ void ausgeben(Funktion &f, InterfaceOptVerfahren &v, double a, double b,
 
 	ofstream dataFile;
 	ofstream cmdFile;
+	try {
+		system("mkdir \"data\" 2> nul");
+	}
+	catch (...){}
 	string pngName = ".//data//" + filename + PLOT_EXT;
 	filename = ".//data//" + filename + DATA_EXT;
 	dataFile.open(filename);
@@ -42,7 +46,7 @@ void ausgeben(Funktion &f, InterfaceOptVerfahren &v, double a, double b,
 
 	cout << "Min: " << x << " Funktionswert: " << f.value(x) << endl; // prints Test Value
 	dataFile.close();
-	cout << " written to: " << filename;
+	cout << " written to: " << filename<<endl;
 // Make png cmd-File
 
 	cmdFile.open("Cmdfile");
@@ -85,7 +89,8 @@ bool match(const std::string& s, const char * c) {
 
 const char helpstr[] =
 		"Usage: <Methode> <Function> <Lower Bound> <Upper Bound> <Epsilon> [outputfile]\n"
-				"Example: BI f1 0.5 10.5 0.0003 output\n\n"
+				"Example: BI f1 0.5 10.5 0.0003 output\n"
+				"         Bisec methode with function f1 result in ./data/output.txt and plot in ./data/output.png \n\n"
 				"Methods to select\n"
 				"BI ............................ Bisection method\n"
 				"FB ............................ Fibonacci methode\n"

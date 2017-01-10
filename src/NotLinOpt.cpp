@@ -16,24 +16,24 @@
 
 #include "BI.h"
 #include "FB.h"
-#include "Funktionen.h"
 #include "GS.h"
+#include "Funktionen.h"
+
 
 using namespace std;
 
 void auswerten(Funktion &f, InterfaceOptVerfahren &v, double a, double b,
 		double eps) {
 	double x = v.findMinimum(a, b, f, eps);
-
-	cout << "Min: " << x << " Funktionswert: " << f.value(x) << endl; // prints Test Value
+	std::cout << "Min: " << x << " Funktionswert: " << f.value(x) << endl;
 }
 
 
 void ausgeben(Funktion &f, InterfaceOptVerfahren &v, double a, double b,
 		double eps, string filename) {
 
-	ofstream dataFile;
-	ofstream cmdFile;
+	std::ofstream dataFile;
+	std::ofstream cmdFile;
 	try {
 		system("mkdir \"data\" 2> nul");
 	}
@@ -163,6 +163,7 @@ int main() {
 #endif
 			if (cmd.length() == 0) {
 			} else if (match(cmd, "quit")) {
+				std::cout << endl;
 				std::cout << cmd << "Auf Wiederschaun!" << endl;
 				break;
 			} else if (match(cmd, "help") || cmd == "?") {
@@ -203,7 +204,8 @@ int main() {
 #if defined(DEBUG)
 			time1 += clock() - tstart;     // end
 			time1 = time1 / CLOCKS_PER_SEC;// rescale to seconds
-			std::cerr << "  time for "<<cmd <<" = " << time1 << " sec." << std::endl;
+			std::cout << "  time for "<<cmd <<" = " << time1 << " sec." << std::endl;
+			std::cerr<<epsilon<<" "<< time1 << std::endl;
 #endif
 		} catch (CalculationException& e) {
 			std::cout << "catched FunctionException \"" << e.what() << "\"";

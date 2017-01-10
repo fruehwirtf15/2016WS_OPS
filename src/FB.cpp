@@ -45,7 +45,7 @@ double FB::findMinimum(double a, double b, Funktion &f, double epsilon,
 		i++;
 		fib_i = GetFibonacci[i]; //This is not an ideal solution in terms of effiency, might come back to it later.
 	}
-	cerr << "Iterationen: " << i << endl;
+	cout << "Iterationen: " << i << endl;
 
 	a_f = 0;
 	b_f = GetFibonacci[i];
